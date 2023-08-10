@@ -1,0 +1,21 @@
+{
+    "name": "hrnet",
+    "version": "0.0.1",
+    "description": "oc P14 components library",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "maxew",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/react": "^18.2.20",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "typescript": "^5.1.6"
+    },
+    "peerDependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    }
+}
