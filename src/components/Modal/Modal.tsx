@@ -1,4 +1,4 @@
-import React, { FormEvent } from 'react'
+import React, { FormEvent, useState } from 'react'
 
 interface ModalProps {
     message?: string
@@ -7,10 +7,11 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
+
     return (
         <div className="confirm-modal">
             <div className="confirm-modal-wrapper">
-                {props.message}
+                {props.message} 
                 <button className="create-btn" onClick={props.confirm}>
                     {props.label ?? 'OK'}
                 </button>
