@@ -11,14 +11,11 @@ export const Table: React.FC<TableProps> = (props) => {
         ? Object.values(props.headingNames)
         : null
 
-    let dataKeys: string[] = props.headingNames
-        ? Object.keys(props.headingNames)
-        : []
+    const dataKeys: string[] = Object.keys(props.data[0])
 
     //check if headingNames keys and data keys are the same
     if (props.headingNames) {
-        const dataKeysToCompare =
-            props.data.length > 0 ? Object.keys(props.data[0]) : []
+        const dataKeysToCompare = props.data.length > 0 ? dataKeys : []
 
         const missingKeys = Object.keys(props.headingNames).filter(
             (key) => !dataKeysToCompare.includes(key)
@@ -26,7 +23,6 @@ export const Table: React.FC<TableProps> = (props) => {
 
         if (missingKeys.length > 0) {
             namesGiven = null
-            dataKeys = Object.keys(props.data[0])
             console.warn(
                 `Key${missingKeys.length > 2 ? 's' : ''} ${missingKeys.join(
                     ', '
@@ -38,9 +34,8 @@ export const Table: React.FC<TableProps> = (props) => {
     }
 
     //get the table colmuns heading name
-    const headingNames = namesGiven || Object.keys(props.data[0])
+    const headingNames = namesGiven || dataKeys
 
-    //recréer un tableau avec les keys et valeurs + idx
     return (
         <table className="table">
             <caption>{props.title ?? ''}</caption>

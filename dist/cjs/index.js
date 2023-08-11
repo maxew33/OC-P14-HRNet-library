@@ -2809,4 +2809,49 @@ const Modal = (props) => {
             React.createElement("button", { className: "create-btn", onClick: props.confirm }, (_a = props.label) !== null && _a !== void 0 ? _a : 'OK'))));
 };
 
+const Dropdown = (props) => {
+    var _a;
+    const [isDropped, setIsDropped] = reactExports.useState(false);
+    const handleClick = () => {
+        setIsDropped(!isDropped);
+    };
+    const handleSelect = (item) => {
+        var _a;
+        props.selectItem((_a = props.dataName) !== null && _a !== void 0 ? _a : '', item.toString());
+        setIsDropped(false);
+    };
+    return (React.createElement("div", { className: "dropdown" },
+        props.dataName && React.createElement("div", null,
+            props.dataName,
+            " :"),
+        React.createElement("div", { className: 'value' + (isDropped ? ' dropped' : ''), onClick: handleClick }, (_a = props.currentValue) !== null && _a !== void 0 ? _a : 'select',
+            isDropped && (React.createElement("ul", { className: "list" }, props.items.map((item, key) => (React.createElement("li", { key: key, onClick: () => handleSelect(item) }, item))))))));
+};
+
+const Table = (props) => {
+    var _a;
+    let namesGiven = props.headingNames
+        ? Object.values(props.headingNames)
+        : null;
+    const dataKeys = Object.keys(props.data[0]);
+    //check if headingNames keys and data keys are the same
+    if (props.headingNames) {
+        const dataKeysToCompare = props.data.length > 0 ? dataKeys : [];
+        const missingKeys = Object.keys(props.headingNames).filter((key) => !dataKeysToCompare.includes(key));
+        if (missingKeys.length > 0) {
+            namesGiven = null;
+            console.warn(`Key${missingKeys.length > 2 ? 's' : ''} ${missingKeys.join(', ')} ${missingKeys.length > 2 ? 'are' : 'is'} missing in the heading names objects given. Data keys will be used instead.`);
+        }
+    }
+    //get the table colmuns heading name
+    const headingNames = namesGiven || dataKeys;
+    return (React.createElement("table", { className: "table" },
+        React.createElement("caption", null, (_a = props.title) !== null && _a !== void 0 ? _a : ''),
+        React.createElement("tbody", null,
+            React.createElement("tr", null, headingNames.map((name, idx) => (React.createElement("th", { scope: "col", key: 'col' + idx }, name)))),
+            props.data.map((data, rowIdx) => (React.createElement("tr", { key: 'row' + rowIdx + 1 }, dataKeys.map((key, colIdx) => (React.createElement("th", { scope: "col", key: 'row' + rowIdx + 'col' + colIdx }, data[key])))))))));
+};
+
+exports.Dropdown = Dropdown;
 exports.Modal = Modal;
+exports.Table = Table;

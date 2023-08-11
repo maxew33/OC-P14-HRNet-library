@@ -7,4 +7,21 @@ interface ModalProps {
 }
 declare const Modal: React.FC<ModalProps>;
 
-export { Modal };
+interface DropdownProps {
+    currentValue?: string | number | null;
+    items: (number | string)[];
+    dataName?: string;
+    selectItem: (id: string, value: string) => void;
+}
+declare const Dropdown: React.FC<DropdownProps>;
+
+interface TableProps {
+    title?: string;
+    headingNames?: {
+        [key: string]: string;
+    } | null;
+    data: object[];
+}
+declare const Table: React.FC<TableProps>;
+
+export { Dropdown, Modal, Table };
