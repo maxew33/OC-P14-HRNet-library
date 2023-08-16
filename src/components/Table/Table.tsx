@@ -12,7 +12,7 @@ export const Table: React.FC<TableProps> = (props) => {
     const { title, headingNames, data} = props
 
     // ========================================
-    //check if headingNames keys and data keys are the same
+    // check if headingNames keys and data keys are the same
     // ========================================
 
     let namesGiven = headingNames ? Object.values(headingNames) : null

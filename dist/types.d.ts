@@ -11,7 +11,7 @@ interface DropdownProps {
     currentValue?: string | number | null;
     items: (number | string)[];
     dataName?: string;
-    selectItem: (id: string, value: string) => void;
+    selectItem: (id: string, value: any) => void;
 }
 declare const Dropdown: React.FC<DropdownProps>;
 
@@ -20,7 +20,9 @@ interface TableProps {
     headingNames?: {
         [key: string]: string;
     } | null;
-    data: object[];
+    data: {
+        [key: string]: string | number;
+    }[];
 }
 declare const Table: React.FC<TableProps>;
 

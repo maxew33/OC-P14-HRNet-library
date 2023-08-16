@@ -4,7 +4,9 @@ interface TableProps {
     headingNames?: {
         [key: string]: string;
     } | null;
-    data: object[];
+    data: {
+        [key: string]: string | number;
+    }[];
 }
 export declare const Table: React.FC<TableProps>;
 export default Table;
