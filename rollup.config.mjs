@@ -6,6 +6,7 @@ import { terser } from 'rollup-plugin-terser'
 import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 
 const packageJson = require('./package.json')
+const postcss = require('rollup-plugin-postcss')
 
 export default [
     {
@@ -28,6 +29,9 @@ export default [
             commonjs(),
             typescript({ tsconfig: './tsconfig.json' }),
             terser(),
+            postcss({
+                modules: true,
+              }),
         ],
         external: ['react', 'react-dom', 'styled-components'],
     },
