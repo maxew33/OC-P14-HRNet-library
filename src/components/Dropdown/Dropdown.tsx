@@ -4,7 +4,8 @@ interface DropdownProps {
     currentValue?: string | number | null
     items: (number | string)[]
     dataName?: string
-    selectItem: (id: string, value: string) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    selectItem: (id: string, value: any) => void
 }
 
 const Dropdown: React.FC<DropdownProps> = (props) => {
