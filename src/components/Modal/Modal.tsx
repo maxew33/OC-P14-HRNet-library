@@ -1,4 +1,5 @@
 import React, { FormEvent, useState } from 'react'
+import styles from './Modal.module.css'
 
 interface ModalProps {
     message?: string
@@ -9,7 +10,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = (props) => {
 
     return (
-        <div className="confirm-modal">
+        <div className={styles.test}>
             <div className="confirm-modal-wrapper">
                 {props.message} 
                 <button className="create-btn" onClick={props.confirm}>
