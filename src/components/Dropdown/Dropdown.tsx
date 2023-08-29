@@ -12,6 +12,7 @@ interface DropdownProps {
     fFam?: string
     fSize?: string
     fCol?: string
+    textAlign?: 'center' | 'right' | 'left'
     underline?: boolean
 
     lBg?: string
@@ -35,6 +36,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
         fFam,
         fSize,
         fCol,
+        textAlign,
         underline,
 
         lBg,
@@ -92,6 +94,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
                     styles.value + ' ' + (isDropped ? styles.dropped : '')
                 }
                 onClick={handleClick}
+                style={{ textAlign: textAlign }}
             >
                 {currentValue ?? 'select'}
 

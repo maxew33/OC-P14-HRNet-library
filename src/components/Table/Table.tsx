@@ -1,15 +1,15 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 import Dropdown from '../Dropdown'
+import styles from './Table.module.css'
 
 interface TableProps {
     title?: string
     headingNames?: { [key: string]: string } | null
-    data: {[key: string]: string | number }[]
+    data: { [key: string]: string | number }[]
 }
 
 export const Table: React.FC<TableProps> = (props) => {
-
-    const { title, headingNames, data} = props
+    const { title, headingNames, data } = props
 
     // ========================================
     // check if headingNames keys and data keys are the same
@@ -40,7 +40,7 @@ export const Table: React.FC<TableProps> = (props) => {
         }
     }
 
-    //get the table colmuns heading name
+    // get the table colmuns heading name
     const headingNamesGot = namesGiven || dataKeys
 
     dataKeys.forEach((data, idx) => {
@@ -70,7 +70,7 @@ export const Table: React.FC<TableProps> = (props) => {
     }
 
     useEffect(() => {
-        const tmpData = [...displayedData].sort((a: any , b: any) => {
+        const tmpData = [...displayedData].sort((a: any, b: any) => {
             if (a[sortedKey.key] > b[sortedKey.key])
                 return sortedKey.asc ? 1 : -1
             if (a[sortedKey.key] < b[sortedKey.key])
@@ -86,11 +86,13 @@ export const Table: React.FC<TableProps> = (props) => {
     // ========================================
 
     const [displayingQty, setDisplayingQty] = useState(10)
-    
+
     const handleSelectQty = (_id: string, value: number) => {
         setDisplayingQty(value)
+        setCurrentPage(1)
     }
-   // ========================================
+
+    // ========================================
     // Page navigation
     // ========================================
 
@@ -125,39 +127,38 @@ export const Table: React.FC<TableProps> = (props) => {
         setSearchInput(target.value)
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         dataSearching(searchInput.toString())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchInput])
 
     const dataSearching = (word: string) => {
-
         const searchedWord = word.toLowerCase()
 
         const tempData: React.SetStateAction<{ [key: string]: any }[]> = []
 
         props.data.forEach((data) => {
-            const keys : string[] = Object.keys(data)
+            const keys: string[] = Object.keys(data)
             let match = false
             keys.forEach((key) => {
-                if(!match){
+                if (!match) {
                     const wordToCompare = data[key].toString().toLowerCase()
-                    if(wordToCompare.match(searchedWord)){
+                    if (wordToCompare.match(searchedWord)) {
                         tempData.push(data)
                         match = true
                     }
                 }
-        })}
-        )
+            })
+        })
 
         setDisplayedData(tempData)
     }
 
     return (
         <>
-            <div>
+            <div className={styles.entriesDisplayed}>
                 <span>
-                    Show
+                    Show test
                     <Dropdown
                         items={[10, 25, 50, 100]}
                         selectItem={handleSelectQty}
@@ -176,7 +177,8 @@ export const Table: React.FC<TableProps> = (props) => {
                     />
                 </form>
             </div>
-            <table>
+
+            <table className={styles.table}>
                 <caption>{title ?? ''}</caption>
                 <tbody>
                     <tr>
@@ -212,7 +214,7 @@ export const Table: React.FC<TableProps> = (props) => {
                     )}
                 </tbody>
             </table>
-            <div className="">
+            <div className={styles.tableNavigation}>
                 <span>
                     Showing {(currentPage - 1) * displayingQty + 1} to{' '}
                     {currentPage === pagesQty

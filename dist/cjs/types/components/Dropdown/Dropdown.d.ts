@@ -8,6 +8,7 @@ interface DropdownProps {
     fFam?: string;
     fSize?: string;
     fCol?: string;
+    textAlign?: 'center' | 'right' | 'left';
     underline?: boolean;
     lBg?: string;
     lWidth?: string;
