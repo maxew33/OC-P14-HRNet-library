@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, Fragment, useEffect, useState } from 'react'
 import Dropdown from '../Dropdown'
 import styles from './Table.module.css'
 
@@ -157,12 +157,13 @@ export const Table: React.FC<TableProps> = (props) => {
     return (
         <>
             <div className={styles.entriesDisplayed}>
-                <span>
-                    Show test
+                <span className={styles.dropdown}>
+                    Show
                     <Dropdown
                         items={[10, 25, 50, 100]}
                         selectItem={handleSelectQty}
                         currentValue={displayingQty.toString()}
+                        width="75px"
                     />
                     entries
                 </span>
@@ -200,14 +201,14 @@ export const Table: React.FC<TableProps> = (props) => {
                             rowIdx < currentPage * displayingQty && (
                                 <tr key={'row' + rowIdx + 1}>
                                     {dataKeys.map((key, colIdx) => (
-                                        <th
+                                        <td
                                             scope="col"
                                             key={
                                                 'row' + rowIdx + 'col' + colIdx
                                             }
                                         >
                                             {data[key as keyof typeof data]}
-                                        </th>
+                                        </td>
                                     ))}
                                 </tr>
                             )
@@ -222,23 +223,62 @@ export const Table: React.FC<TableProps> = (props) => {
                         : currentPage * displayingQty}{' '}
                     of {displayedData.length} entries
                 </span>
-                <div>
-                    <button onClick={() => handleNavPage(-1)}>prev</button>
+                <div className={styles.pageSelection}>
+                    <button
+                        className={currentPage === 1 ? styles.disabled : ''}
+                        onClick={() => handleNavPage(-1)}
+                    >
+                        prev
+                    </button>
+
+                    {/* page selection */}
+
                     {Array.from(Array(pagesQty)).map((_, idx) => (
-                        <span key={'pageNavigation' + idx}>
-                            {currentPage === idx + 1 ? (
-                                <span>{idx + 1}</span>
-                            ) : (
+                        <Fragment key={'pageNavigation' + idx}>                            
+                            {
+                            (pagesQty < 7) 
+                            || 
+                            (Math.abs(currentPage - idx - 1) < 3) 
+                            || 
+                            (currentPage <= 2 && idx <= 4) 
+                            || 
+                            (currentPage >= pagesQty - 2 && idx > pagesQty - 6) 
+                            || 
+                            (idx === 0 || idx === pagesQty - 1) ?
+                            currentPage === idx + 1 ? (
+                                <span className={styles.currentPage}>{idx + 1}</span>
+                            ) 
+                            : 
                                 <button
                                     onClick={() => handleSelectPage(idx + 1)}
+                                    className={styles.otherPage}
                                     key={'pageBtn' + idx}
                                 >
                                     {idx + 1}
                                 </button>
-                            )}
-                        </span>
+                            
+                            :   
+                                (currentPage - 3 === idx + 1 
+                                || 
+                                currentPage + 3 === idx + 1 
+                                || 
+                                (currentPage <= 2 && idx === 5) 
+                                || 
+                                (currentPage >= pagesQty - 2 && idx > pagesQty - 7)) &&
+                                <span className={styles.currentPage}>...</span>
+                            }
+                        </Fragment>
                     ))}
-                    <button onClick={() => handleNavPage(1)}>next</button>
+
+                    
+                    <button
+                        className={
+                            currentPage === pagesQty ? styles.disabled : ''
+                        }
+                        onClick={() => handleNavPage(1)}
+                    >
+                        next
+                    </button>
                 </div>
             </div>
         </>

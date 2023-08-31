@@ -1,6 +1,6 @@
 {
     "name": "hrnet-maxew-library",
-    "version": "0.3.5",
+    "version": "0.4.0",
     "description": "oc P14 components library",
     "scripts": {
         "build": "rollup -c --bundleConfigAsCjs"

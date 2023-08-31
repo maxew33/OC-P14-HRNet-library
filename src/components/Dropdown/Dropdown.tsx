@@ -7,8 +7,10 @@ interface DropdownProps {
     items: (number | string)[]
     currentValue?: string | number | null
     dataName?: string
+    dataLabel?: string
 
     width?: string
+    height?: string
     fFam?: string
     fSize?: string
     fCol?: string
@@ -31,8 +33,10 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
         items,
         currentValue,
         dataName,
+        dataLabel,
 
         width,
+        height,
         fFam,
         fSize,
         fCol,
@@ -50,13 +54,14 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
         itemPad,
     } = props
 
-    const wborder = underline ? `${lBordW} solid ${lBordC}` : ''
+    const wborder = underline ? `${lBordW ?? '2px'} solid ${lBordC ?? 'black'}` : 'none'
 
     const wrapperStyle = {
         fontFamily: fFam,
         fontSize: fSize,
         color: fCol,
         width: width,
+        height: height,
         borderBottom: wborder,
     }
 
@@ -88,7 +93,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
 
     return (
         <div className={styles.dropdown} style={wrapperStyle}>
-            {dataName && <div>{dataName} :</div>}
+            {dataLabel && <div>{dataLabel} :</div>}
             <div
                 className={
                     styles.value + ' ' + (isDropped ? styles.dropped : '')
