@@ -8,11 +8,45 @@ interface TableProps {
     title?: string
     headingNames?: { [key: string]: string } | null
     data: { [key: string]: string | number }[]
-    closeUp ?: boolean
+    closeUp?: boolean
+    background?: string
+
+    width?: string
+    fFam?: string
+    fSize?: string
+    fCol?: string
+
+    tableFCol?: string    
+    tBordW?: string
+    tBordC?: string
+    tBordR?: string
+
+    greyLine?: boolean
+
+    prevTxt?: string
+    nextTxt?: string
+    buttonEllipsis?: boolean
 }
 
 export const Table: React.FC<TableProps> = (props) => {
-    const { title, headingNames, data, closeUp } = props
+    const { 
+        title, 
+        headingNames, 
+        data, 
+        closeUp, 
+        background,
+        tBordW, 
+        tBordC, 
+        tBordR, 
+        width, 
+        fFam, 
+        fSize,
+        fCol, 
+        tableFCol,
+        greyLine, 
+        prevTxt,
+        nextTxt, 
+        buttonEllipsis } = props
 
     // ========================================
     // check if headingNames keys and data keys are the same
@@ -118,6 +152,8 @@ export const Table: React.FC<TableProps> = (props) => {
         tempPage > 0 && tempPage <= pagesQty && setCurrentPage(tempPage)
     }
 
+    const ellipsis = buttonEllipsis ?? 'true'
+
     // ========================================
     // Searchbar
     // ========================================
@@ -189,12 +225,35 @@ export const Table: React.FC<TableProps> = (props) => {
     // custom style
     // ========================================
 
+    const grayed = greyLine ?? 'true'
+
+    const globalStyle = {
+        fontFamily: fFam,
+        color: fCol,
+        fontSize: fSize
+    }
+
+    const tableStyle = {
+        width : width,
+        borderWidth: tBordW,
+        borderColor: tBordC,
+        borderRadius: tBordR,        
+        background: background,
+        color: tableFCol,
+    }
+
     const lineStyle = {
-        cursor: openOverlay ? 'pointer' : 'default'
+        cursor: openOverlay ? 'pointer' : 'default',
+    }
+
+    const btnStyle = {
+        color: tableFCol,
+        fontSize: fSize,
+        background: background
     }
 
     return (
-        <>
+        <section className={styles.section} style={globalStyle}>
             <div className={styles.entriesDisplayed}>
                 <span className={styles.dropdown}>
                     Show
@@ -203,10 +262,14 @@ export const Table: React.FC<TableProps> = (props) => {
                         selectItem={handleSelectQty}
                         currentValue={displayingQty.toString()}
                         width="75px"
+                        textAlign='center'
+                        fCol={fCol}
+                        fSize={fSize}
+                        fFam={fFam}
                     />
                     entries
                 </span>
-                <form>
+                <form className={styles.form}>
                     search
                     <input
                         type="text"
@@ -220,7 +283,7 @@ export const Table: React.FC<TableProps> = (props) => {
 
             <table className={styles.table}>
                 <caption>{title ?? ''}</caption>
-                <tbody>
+                <tbody style={tableStyle}>
                     <tr>
                         {Object.keys(headings).map((name: string, idx) => (
                             <th
@@ -241,7 +304,10 @@ export const Table: React.FC<TableProps> = (props) => {
                             rowIdx < currentPage * displayingQty && (
                                 <tr
                                     key={'row' + rowIdx + 1}
-                                    onClick={() => openOverlay && handleClick(data)}
+                                    onClick={() =>
+                                        openOverlay && handleClick(data)
+                                    }
+                                    className={grayed? styles.grayed:''}
                                     style={lineStyle}
                                 >
                                     {dataKeys.map((key, colIdx) => (
@@ -272,20 +338,28 @@ export const Table: React.FC<TableProps> = (props) => {
                     <button
                         className={currentPage === 1 ? styles.disabled : ''}
                         onClick={() => handleNavPage(-1)}
+                        style={btnStyle}
                     >
-                        prev
+                        {prevTxt ?? 'prev'}
                     </button>
 
                     {/* page selection */}
 
                     {Array.from(Array(pagesQty)).map((_, idx) => (
                         <Fragment key={'pageNavigation' + idx}>
-                            {pagesQty < 7 ||
-                            Math.abs(currentPage - idx - 1) < 3 ||
-                            (currentPage <= 2 && idx <= 4) ||
+                            {!ellipsis 
+                            || 
+                            pagesQty < 7 
+                            ||
+                            Math.abs(currentPage - idx - 1) < 3 
+                            ||
+                            (currentPage <= 2 && idx <= 4) 
+                            ||
                             (currentPage >= pagesQty - 2 &&
-                                idx > pagesQty - 6) ||
-                            idx === 0 ||
+                                idx > pagesQty - 6) 
+                            ||
+                            idx === 0 
+                            ||
                             idx === pagesQty - 1 ? (
                                 currentPage === idx + 1 ? (
                                     <span className={styles.currentPage}>
@@ -298,6 +372,7 @@ export const Table: React.FC<TableProps> = (props) => {
                                         }
                                         className={styles.otherPage}
                                         key={'pageBtn' + idx}
+                                        style={btnStyle}
                                     >
                                         {idx + 1}
                                     </button>
@@ -321,8 +396,9 @@ export const Table: React.FC<TableProps> = (props) => {
                             currentPage === pagesQty ? styles.disabled : ''
                         }
                         onClick={() => handleNavPage(1)}
+                        style={btnStyle}
                     >
-                        next
+                        {nextTxt ?? 'next'}
                     </button>
                 </div>
             </div>
@@ -332,9 +408,16 @@ export const Table: React.FC<TableProps> = (props) => {
                     close={showModal}
                     confirm={showModal}
                     message={infosSelected}
+                    fSize={fSize}
+                    fFam={fFam}
+                    fCol={tableFCol}
+                    bordC={tBordC}
+                    bordR={tBordR}
+                    bordW={tBordW}
+                    bg={background}
                 />
             )}
-        </>
+        </section>
     )
 }
 

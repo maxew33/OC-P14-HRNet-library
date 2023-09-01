@@ -56,7 +56,9 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
 
     const line = underline ?? 'true'
 
-    const wborder = line ? `${lBordW ?? '2px'} solid ${lBordC ?? 'black'}` : 'none'
+    const wborder = line
+        ? `${lBordW ?? '2px'} solid ${lBordC ?? 'black'}`
+        : 'none'
 
     const wrapperStyle = {
         fontFamily: fFam,
@@ -74,6 +76,12 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
         borderWidth: lBordW,
         borderColor: lBordC,
         borderRadius: lBordR,
+        color: fCol,
+    }
+
+    const valueStyle = {
+        textAlign: textAlign,
+        color: fCol,
     }
 
     const eltStyle = {
@@ -101,8 +109,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
                     styles.value + ' ' + (isDropped ? styles.dropped : '')
                 }
                 onClick={handleClick}
-                style={{ textAlign: textAlign }
-            }
+                style={valueStyle}
             >
                 {currentValue ?? 'select'}
 

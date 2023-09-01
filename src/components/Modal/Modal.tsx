@@ -92,7 +92,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         >
             <div className={styles.modal} style={modalStyle}>
                 {close && (
-                    <button className={styles.closeBtn} onClick={close}>
+                    <button className={styles.closeBtn} onClick={close} style={{color: fCol}}>
                         ✕
                     </button>
                 )}
