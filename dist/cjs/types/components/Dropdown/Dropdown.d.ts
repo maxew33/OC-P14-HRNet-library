@@ -4,7 +4,9 @@ interface DropdownProps {
     items: (number | string)[];
     currentValue?: string | number | null;
     dataName?: string;
+    dataLabel?: string;
     width?: string;
+    height?: string;
     fFam?: string;
     fSize?: string;
     fCol?: string;

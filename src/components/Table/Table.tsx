@@ -1,15 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { FormEvent, Fragment, useEffect, useState } from 'react'
 import Dropdown from '../Dropdown'
 import styles from './Table.module.css'
+import { Modal } from '..'
 
 interface TableProps {
     title?: string
     headingNames?: { [key: string]: string } | null
     data: { [key: string]: string | number }[]
+    closeUp ?: boolean
 }
 
 export const Table: React.FC<TableProps> = (props) => {
-    const { title, headingNames, data } = props
+    const { title, headingNames, data, closeUp } = props
 
     // ========================================
     // check if headingNames keys and data keys are the same
@@ -154,6 +157,42 @@ export const Table: React.FC<TableProps> = (props) => {
         setDisplayedData(tempData)
     }
 
+    // ========================================
+    // closeUp : get infos by clicking on the line
+    // ========================================
+
+    const [infosSelected, setInfosSelected] = useState([''])
+
+    const [infosShown, setInfosShown] = useState(false)
+
+    const openOverlay = closeUp ?? true
+
+    const handleClick = (data: any) => {
+        const tmpArray: any[] = []
+
+        {
+            dataKeys.map((key) =>
+                tmpArray.push(key + ': ' + data[key as keyof typeof data])
+            )
+        }
+
+        setInfosSelected(tmpArray)
+
+        showModal()
+    }
+
+    const showModal = () => {
+        setInfosShown(!infosShown)
+    }
+
+    // ========================================
+    // custom style
+    // ========================================
+
+    const lineStyle = {
+        cursor: openOverlay ? 'pointer' : 'default'
+    }
+
     return (
         <>
             <div className={styles.entriesDisplayed}>
@@ -188,6 +227,7 @@ export const Table: React.FC<TableProps> = (props) => {
                                 scope="col"
                                 key={'col' + idx}
                                 onClick={() => handleSort(name)}
+                                className={styles.heading}
                             >
                                 {headings[name]}{' '}
                                 {name === sortedKey.key &&
@@ -199,7 +239,11 @@ export const Table: React.FC<TableProps> = (props) => {
                         (data, rowIdx) =>
                             rowIdx >= (currentPage - 1) * displayingQty &&
                             rowIdx < currentPage * displayingQty && (
-                                <tr key={'row' + rowIdx + 1}>
+                                <tr
+                                    key={'row' + rowIdx + 1}
+                                    onClick={() => openOverlay && handleClick(data)}
+                                    style={lineStyle}
+                                >
                                     {dataKeys.map((key, colIdx) => (
                                         <td
                                             scope="col"
@@ -215,6 +259,7 @@ export const Table: React.FC<TableProps> = (props) => {
                     )}
                 </tbody>
             </table>
+
             <div className={styles.tableNavigation}>
                 <span>
                     Showing {(currentPage - 1) * displayingQty + 1} to{' '}
@@ -234,43 +279,43 @@ export const Table: React.FC<TableProps> = (props) => {
                     {/* page selection */}
 
                     {Array.from(Array(pagesQty)).map((_, idx) => (
-                        <Fragment key={'pageNavigation' + idx}>                            
-                            {
-                            (pagesQty < 7) 
-                            || 
-                            (Math.abs(currentPage - idx - 1) < 3) 
-                            || 
-                            (currentPage <= 2 && idx <= 4) 
-                            || 
-                            (currentPage >= pagesQty - 2 && idx > pagesQty - 6) 
-                            || 
-                            (idx === 0 || idx === pagesQty - 1) ?
-                            currentPage === idx + 1 ? (
-                                <span className={styles.currentPage}>{idx + 1}</span>
-                            ) 
-                            : 
-                                <button
-                                    onClick={() => handleSelectPage(idx + 1)}
-                                    className={styles.otherPage}
-                                    key={'pageBtn' + idx}
-                                >
-                                    {idx + 1}
-                                </button>
-                            
-                            :   
-                                (currentPage - 3 === idx + 1 
-                                || 
-                                currentPage + 3 === idx + 1 
-                                || 
-                                (currentPage <= 2 && idx === 5) 
-                                || 
-                                (currentPage >= pagesQty - 2 && idx > pagesQty - 7)) &&
-                                <span className={styles.currentPage}>...</span>
-                            }
+                        <Fragment key={'pageNavigation' + idx}>
+                            {pagesQty < 7 ||
+                            Math.abs(currentPage - idx - 1) < 3 ||
+                            (currentPage <= 2 && idx <= 4) ||
+                            (currentPage >= pagesQty - 2 &&
+                                idx > pagesQty - 6) ||
+                            idx === 0 ||
+                            idx === pagesQty - 1 ? (
+                                currentPage === idx + 1 ? (
+                                    <span className={styles.currentPage}>
+                                        {idx + 1}
+                                    </span>
+                                ) : (
+                                    <button
+                                        onClick={() =>
+                                            handleSelectPage(idx + 1)
+                                        }
+                                        className={styles.otherPage}
+                                        key={'pageBtn' + idx}
+                                    >
+                                        {idx + 1}
+                                    </button>
+                                )
+                            ) : (
+                                (currentPage - 3 === idx + 1 ||
+                                    currentPage + 3 === idx + 1 ||
+                                    (currentPage <= 2 && idx === 5) ||
+                                    (currentPage >= pagesQty - 2 &&
+                                        idx > pagesQty - 7)) && (
+                                    <span className={styles.currentPage}>
+                                        ...
+                                    </span>
+                                )
+                            )}
                         </Fragment>
                     ))}
 
-                    
                     <button
                         className={
                             currentPage === pagesQty ? styles.disabled : ''
@@ -281,6 +326,14 @@ export const Table: React.FC<TableProps> = (props) => {
                     </button>
                 </div>
             </div>
+            {infosShown && (
+                <Modal
+                    overlay={true}
+                    close={showModal}
+                    confirm={showModal}
+                    message={infosSelected}
+                />
+            )}
         </>
     )
 }
