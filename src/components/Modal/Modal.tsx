@@ -3,9 +3,10 @@ import React, { FormEvent, useState } from 'react'
 import styles from './Modal.module.css'
 
 interface ModalProps {
-    message?: string
+    message?: string[]
     label?: string
     confirm?: (e: FormEvent) => void
+    close?: (e: FormEvent) => void
 
     overlay?: boolean
     fFam?: string
@@ -39,6 +40,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         message,
         label,
         confirm,
+        close,
         overlay,
         fFam,
         fSize,
@@ -89,10 +91,24 @@ const Modal: React.FC<ModalProps> = (props) => {
             style={{ fontFamily: fFam, fontSize: fSize, color: fCol }}
         >
             <div className={styles.modal} style={modalStyle}>
-                {message}
+                {close && (
+                    <button className={styles.closeBtn} onClick={close}>
+                        ✕
+                    </button>
+                )}
+                {message && (
+                    <div className={styles.messagesContainer}>
+                        {message.map((mess, idx) => (
+                            <div key={'mess' + idx} className={styles.message}>
+                                {mess}
+                            </div>
+                        ))}
+                    </div>
+                )}
+
                 {confirm && (
                     <button
-                        className={styles.btn}
+                        className={styles.confirmBtn}
                         onClick={confirm}
                         style={btnStyle}
                         onMouseEnter={() => setIsHover(true)}
