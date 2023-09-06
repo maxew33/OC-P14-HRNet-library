@@ -2,7 +2,7 @@
 import React, { FormEvent, Fragment, useEffect, useState } from 'react'
 import Dropdown from '../Dropdown'
 import styles from './Table.module.css'
-import { Modal } from '..'
+import Modal  from '../Modal'
 
 interface TableProps {
     title?: string
@@ -266,6 +266,7 @@ export const Table: React.FC<TableProps> = (props) => {
                         fCol={fCol}
                         fSize={fSize}
                         fFam={fFam}
+                        lBordW={tBordW ?? '2px'}
                     />
                     entries
                 </span>

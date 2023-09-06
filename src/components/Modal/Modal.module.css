@@ -13,6 +13,7 @@
 }
 
 .modal {
+  font-size: inherit;
   position: relative;
   background: #f0f0f0;
   padding: 1.5rem 1rem;
@@ -48,5 +49,5 @@
 
 .confirmBtn {
   cursor: pointer;
-  border-style: 1px solid;
+  border-style: solid;
 }

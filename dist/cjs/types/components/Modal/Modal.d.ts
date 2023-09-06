@@ -1,8 +1,9 @@
 import React, { FormEvent } from 'react';
 interface ModalProps {
-    message?: string;
+    message?: string[];
     label?: string;
     confirm?: (e: FormEvent) => void;
+    close?: (e: FormEvent) => void;
     overlay?: boolean;
     fFam?: string;
     fSize?: string;

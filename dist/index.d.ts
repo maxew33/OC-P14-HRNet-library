@@ -1,9 +1,10 @@
 import React, { FormEvent } from 'react';
 
 interface ModalProps {
-    message?: string;
+    message?: string[];
     label?: string;
     confirm?: (e: FormEvent) => void;
+    close?: (e: FormEvent) => void;
     overlay?: boolean;
     fFam?: string;
     fSize?: string;
@@ -60,6 +61,20 @@ interface TableProps {
     data: {
         [key: string]: string | number;
     }[];
+    closeUp?: boolean;
+    background?: string;
+    width?: string;
+    fFam?: string;
+    fSize?: string;
+    fCol?: string;
+    tableFCol?: string;
+    tBordW?: string;
+    tBordC?: string;
+    tBordR?: string;
+    greyLine?: boolean;
+    prevTxt?: string;
+    nextTxt?: string;
+    buttonEllipsis?: boolean;
 }
 declare const Table: React.FC<TableProps>;
 
