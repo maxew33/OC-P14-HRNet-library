@@ -1,6 +1,6 @@
 # HRNet-maxew-library
 
-[hrnet banner](https://zupimages.net/up/23/36/gotu.png)
+![hrnet banner](https://zupimages.net/up/23/36/gotu.png)
 
 This library includes 3 usefull components for the Wealth Health Human Resources Network application (HRNet app) : a Modal, a Dropdown and a Table.
 
@@ -32,7 +32,7 @@ Install easily this library with npm :
 
 ### A modal
 
-[modal component](https://zupimages.net/up/23/36/0tmc.png)
+![modal component](https://zupimages.net/up/23/36/0tmc.png)
 
 ```javascript
 import { useState } from 'react'
@@ -68,7 +68,7 @@ export default function App() {
 
 ### A dropdown
 
-[dropdown component](https://zupimages.net/up/23/36/sffb.png)
+![dropdown component](https://zupimages.net/up/23/36/sffb.png)
 
 ```javascript
 import { useState } from 'react'
@@ -104,7 +104,7 @@ export default function App() {
 
 ### A table
 
-[table component](https://zupimages.net/up/23/36/4sjt.png)
+![table component](https://zupimages.net/up/23/36/4sjt.png)
 
 ```javascript
 import { Table } from 'hrnet-maxew-library'
