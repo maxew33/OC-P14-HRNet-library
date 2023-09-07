@@ -8,17 +8,17 @@ This library includes 3 usefull components for the Wealth Health Human Resources
 
 -   [Installation](#installation)
 
--   [Documentation](#documentation)
-
-    -   [Modal](#modal)
-    -   [Dropdown](#dropdwon)
-    -   [Table](#table)
-
 -   [Examples](#examples)
 
     -   [A modal](#a-modal)
     -   [A dropdown](#a-dropdown)
     -   [A table](#a-table)
+
+-   [Documentation](#documentation)
+
+    -   [Modal](#modal)
+    -   [Dropdown](#dropdwon)
+    -   [Table](#table)
 
 -   [Author](#author)
 
@@ -149,9 +149,9 @@ export default function App() {
 }
 ```
 
-## Documentation {#documentation}
+## Documentation
 
-### Modal
+## Modal
 
 **Props**
 
@@ -197,7 +197,7 @@ You can customize the modal and button styles using the following props:
 -   `hoverBg` (string): The background color for modal button on hover.
 -   `hoverCol` (string): The font color for modal button on hover.
 
-### Dropdown
+## Dropdown
 
 **Props**
 
@@ -241,7 +241,7 @@ You can customize the appearance of the dropdown and its items using the followi
 -   `greyLine` (boolean): Enable or disable grey lines between dropdown items.
 -   `itemPad` (string): The padding for each dropdown item.
 
-### Table
+## Table
 
 **Props**
 
