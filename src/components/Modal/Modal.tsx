@@ -19,6 +19,7 @@ interface ModalProps {
     bordW?: string
     bordC?: string
     bordR?: string
+    lineHeight?: string
 
     bfFam?: string
     bfSize?: string
@@ -51,6 +52,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         bordW,
         bordC,
         bordR,
+        lineHeight,
         bfSize,
         bfFam,
         bfCol,
@@ -73,6 +75,10 @@ const Modal: React.FC<ModalProps> = (props) => {
         borderRadius: bordR,
     }
 
+    const messageContainerStyle = {
+        lineHeight: lineHeight
+    }
+
     const btnStyle = {
         background: isHover ? hoverBg ?? bbg ?? bg : bbg ?? bg,
         fontFamily: bfFam ?? fFam,
@@ -92,12 +98,16 @@ const Modal: React.FC<ModalProps> = (props) => {
         >
             <div className={styles.modal} style={modalStyle}>
                 {close && (
-                    <button className={styles.closeBtn} onClick={close} style={{color: fCol}}>
+                    <button
+                        className={styles.closeBtn}
+                        onClick={close}
+                        style={{ color: fCol }}
+                    >
                         ✕
                     </button>
                 )}
                 {message && (
-                    <div className={styles.messagesContainer}>
+                    <div className={styles.messagesContainer} style={messageContainerStyle}>
                         {message.map((mess, idx) => (
                             <div key={'mess' + idx} className={styles.message}>
                                 {mess}

@@ -49,39 +49,17 @@ export const Table: React.FC<TableProps> = (props) => {
         buttonEllipsis } = props
 
     // ========================================
-    // check if headingNames keys and data keys are the same
+    // set the headings
     // ========================================
-
-    let namesGiven = headingNames ? Object.values(headingNames) : null
-
-    const dataKeys: string[] = Object.keys(data[0])
 
     const headings: { [key: string]: string } = {}
 
-    if (headingNames) {
-        const dataKeysToCompare = data.length > 0 ? dataKeys : []
-
-        const missingKeys = Object.keys(headingNames).filter(
-            (key) => !dataKeysToCompare.includes(key)
-        )
-
-        if (missingKeys.length > 0) {
-            namesGiven = null
-            console.warn(
-                `Key${missingKeys.length > 2 ? 's' : ''} ${missingKeys.join(
-                    ', '
-                )} ${
-                    missingKeys.length > 2 ? 'are' : 'is'
-                } missing in the heading names objects given. Data keys will be used instead.`
-            )
-        }
-    }
-
-    // get the table colmuns heading name
-    const headingNamesGot = namesGiven || dataKeys
-
-    dataKeys.forEach((data, idx) => {
-        headings[data] = headingNamesGot[idx]
+    headingNames ? 
+    Object.keys(headingNames).forEach((data) => {
+        headings[data] = headingNames[data]
+    }) :
+    Object.keys(data[0]).forEach((data) => {
+        headings[data] = data
     })
 
     // ========================================
@@ -207,8 +185,11 @@ export const Table: React.FC<TableProps> = (props) => {
         const tmpArray: any[] = []
 
         {
-            dataKeys.map((key) =>
-                tmpArray.push(key + ': ' + data[key as keyof typeof data])
+            Object.keys(headings).map((key) =>
+                {
+                    const keyData = data[key as keyof typeof data] ?? '---'
+                    tmpArray.push(headings[key] + ': ' + keyData)
+                }
             )
         }
 
@@ -311,7 +292,7 @@ export const Table: React.FC<TableProps> = (props) => {
                                     className={grayed? styles.grayed:''}
                                     style={lineStyle}
                                 >
-                                    {dataKeys.map((key, colIdx) => (
+                                    {Object.keys(headings).map((key, colIdx) => (
                                         <td
                                             scope="col"
                                             key={
@@ -416,6 +397,7 @@ export const Table: React.FC<TableProps> = (props) => {
                     bordR={tBordR}
                     bordW={tBordW}
                     bg={background}
+                    lineHeight='1,5'
                 />
             )}
         </section>
