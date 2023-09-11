@@ -2,12 +2,12 @@
 import React, { FormEvent, Fragment, useEffect, useState } from 'react'
 import Dropdown from '../Dropdown'
 import styles from './Table.module.css'
-import Modal  from '../Modal'
+import Modal from '../Modal'
 
 interface TableProps {
     title?: string
     headingNames?: { [key: string]: string } | null
-    data: { [key: string]: string | number }[]
+    data: { [key: string]: string | number | null}[]
     closeUp?: boolean
     background?: string
 
@@ -16,7 +16,7 @@ interface TableProps {
     fSize?: string
     fCol?: string
 
-    tableFCol?: string    
+    tableFCol?: string
     tBordW?: string
     tBordC?: string
     tBordR?: string
@@ -29,24 +29,25 @@ interface TableProps {
 }
 
 export const Table: React.FC<TableProps> = (props) => {
-    const { 
-        title, 
-        headingNames, 
-        data, 
-        closeUp, 
+    const {
+        title,
+        headingNames,
+        data,
+        closeUp,
         background,
-        tBordW, 
-        tBordC, 
-        tBordR, 
-        width, 
-        fFam, 
+        tBordW,
+        tBordC,
+        tBordR,
+        width,
+        fFam,
         fSize,
-        fCol, 
+        fCol,
         tableFCol,
-        greyLine, 
+        greyLine,
         prevTxt,
-        nextTxt, 
-        buttonEllipsis } = props
+        nextTxt,
+        buttonEllipsis,
+    } = props
 
     // ========================================
     // set the headings
@@ -54,13 +55,13 @@ export const Table: React.FC<TableProps> = (props) => {
 
     const headings: { [key: string]: string } = {}
 
-    headingNames ? 
-    Object.keys(headingNames).forEach((data) => {
-        headings[data] = headingNames[data]
-    }) :
-    Object.keys(data[0]).forEach((data) => {
-        headings[data] = data
-    })
+    headingNames
+        ? Object.keys(headingNames).forEach((data) => {
+              headings[data] = headingNames[data]
+          })
+        : Object.keys(data[0]).forEach((data) => {
+              headings[data] = data
+          })
 
     // ========================================
     // sort data by clicking on the table header
@@ -116,7 +117,6 @@ export const Table: React.FC<TableProps> = (props) => {
 
     useEffect(() => {
         setPagesQty(Math.ceil(displayedData.length / displayingQty))
-        console.log(pagesQty)
     }, [displayingQty, displayedData, pagesQty])
 
     const handleSelectPage = (idx: number) => {
@@ -158,8 +158,9 @@ export const Table: React.FC<TableProps> = (props) => {
             const keys: string[] = Object.keys(data)
             let match = false
             keys.forEach((key) => {
+                const myData = data[key] ?? '' //prevent nullish data
                 if (!match) {
-                    const wordToCompare = data[key].toString().toLowerCase()
+                    const wordToCompare = myData.toString().toLowerCase()
                     if (wordToCompare.match(searchedWord)) {
                         tempData.push(data)
                         match = true
@@ -185,12 +186,10 @@ export const Table: React.FC<TableProps> = (props) => {
         const tmpArray: any[] = []
 
         {
-            Object.keys(headings).map((key) =>
-                {
-                    const keyData = data[key as keyof typeof data] ?? '---'
-                    tmpArray.push(headings[key] + ': ' + keyData)
-                }
-            )
+            Object.keys(headings).map((key) => {
+                const keyData = data[key as keyof typeof data] ?? '---'
+                tmpArray.push(headings[key] + ': ' + keyData)
+            })
         }
 
         setInfosSelected(tmpArray)
@@ -211,14 +210,14 @@ export const Table: React.FC<TableProps> = (props) => {
     const globalStyle = {
         fontFamily: fFam,
         color: fCol,
-        fontSize: fSize
+        fontSize: fSize,
     }
 
     const tableStyle = {
-        width : width,
+        width: width,
         borderWidth: tBordW,
         borderColor: tBordC,
-        borderRadius: tBordR,        
+        borderRadius: tBordR,
         background: background,
         color: tableFCol,
     }
@@ -230,7 +229,7 @@ export const Table: React.FC<TableProps> = (props) => {
     const btnStyle = {
         color: tableFCol,
         fontSize: fSize,
-        background: background
+        background: background,
     }
 
     return (
@@ -243,7 +242,7 @@ export const Table: React.FC<TableProps> = (props) => {
                         selectItem={handleSelectQty}
                         currentValue={displayingQty.toString()}
                         width="75px"
-                        textAlign='center'
+                        textAlign="center"
                         fCol={fCol}
                         fSize={fSize}
                         fFam={fFam}
@@ -252,11 +251,11 @@ export const Table: React.FC<TableProps> = (props) => {
                     entries
                 </span>
                 <form className={styles.form}>
-                    search
+                    <label htmlFor="HRNet-Table-search">search</label>
                     <input
                         type="text"
-                        name=""
-                        id=""
+                        name="HRNet-Table-search"
+                        id="HRNet-Table-search"
                         value={searchInput}
                         onInput={handleInput}
                     />
@@ -289,19 +288,24 @@ export const Table: React.FC<TableProps> = (props) => {
                                     onClick={() =>
                                         openOverlay && handleClick(data)
                                     }
-                                    className={grayed? styles.grayed:''}
+                                    className={grayed ? styles.grayed : ''}
                                     style={lineStyle}
                                 >
-                                    {Object.keys(headings).map((key, colIdx) => (
-                                        <td
-                                            scope="col"
-                                            key={
-                                                'row' + rowIdx + 'col' + colIdx
-                                            }
-                                        >
-                                            {data[key as keyof typeof data]}
-                                        </td>
-                                    ))}
+                                    {Object.keys(headings).map(
+                                        (key, colIdx) => (
+                                            <td
+                                                scope="col"
+                                                key={
+                                                    'row' +
+                                                    rowIdx +
+                                                    'col' +
+                                                    colIdx
+                                                }
+                                            >
+                                                {data[key as keyof typeof data]}
+                                            </td>
+                                        )
+                                    )}
                                 </tr>
                             )
                     )}
@@ -329,19 +333,13 @@ export const Table: React.FC<TableProps> = (props) => {
 
                     {Array.from(Array(pagesQty)).map((_, idx) => (
                         <Fragment key={'pageNavigation' + idx}>
-                            {!ellipsis 
-                            || 
-                            pagesQty < 7 
-                            ||
-                            Math.abs(currentPage - idx - 1) < 3 
-                            ||
-                            (currentPage <= 2 && idx <= 4) 
-                            ||
+                            {!ellipsis ||
+                            pagesQty < 7 ||
+                            Math.abs(currentPage - idx - 1) < 3 ||
+                            (currentPage <= 2 && idx <= 4) ||
                             (currentPage >= pagesQty - 2 &&
-                                idx > pagesQty - 6) 
-                            ||
-                            idx === 0 
-                            ||
+                                idx > pagesQty - 6) ||
+                            idx === 0 ||
                             idx === pagesQty - 1 ? (
                                 currentPage === idx + 1 ? (
                                     <span className={styles.currentPage}>
@@ -397,7 +395,7 @@ export const Table: React.FC<TableProps> = (props) => {
                     bordR={tBordR}
                     bordW={tBordW}
                     bg={background}
-                    lineHeight='1,5'
+                    lineHeight="1,5"
                 />
             )}
         </section>

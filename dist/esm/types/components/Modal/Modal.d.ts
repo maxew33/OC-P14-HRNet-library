@@ -14,6 +14,7 @@ interface ModalProps {
     bordW?: string;
     bordC?: string;
     bordR?: string;
+    lineHeight?: string;
     bfFam?: string;
     bfSize?: string;
     bfCol?: string;

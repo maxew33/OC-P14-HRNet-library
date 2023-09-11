@@ -5,7 +5,7 @@ interface TableProps {
         [key: string]: string;
     } | null;
     data: {
-        [key: string]: string | number;
+        [key: string]: string | number | null;
     }[];
     closeUp?: boolean;
     background?: string;
